@@ -2,18 +2,29 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+    "gee"
 )
 
+// // Engine is the uni handler for all requests
+// type Engine struct{}
+
 func main() {
-    counter := 0
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "URL.Path = %q\n", r.URL.Path)
-	})
-    http.HandleFunc("/count", func(w http.ResponseWriter, r *http.Request) {
-        counter += 1
+    var counter int
+    r := gee.New()
+    
+    r.GET("/", func (w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintf(w, "URL.Path = %q\n", req.URL.Path)
+        for k, v := range req.Header {
+            fmt.Fprintf(w, "Header[%q] = %q\n", k, v)
+        }
+    })
+
+    r.GET("/count", func (w http.ResponseWriter, req *http.Request) {
+        counter += 1 
+        // counter is forever 1, because this func will be called multiple times
         fmt.Fprintf(w, "counter = %d\n", counter)
-    }) 
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+    })
+
+    r.Run(":9999")
 }
