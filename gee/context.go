@@ -15,6 +15,7 @@ type Context struct {
 	// request info
 	Path   string
 	Method string
+	Params map[string]string
 	// response info
 	StatusCode int
 }
@@ -35,6 +36,12 @@ func (c *Context) Query(key string) string {
 
 func (c *Context) Form(key string) string {
 	return c.Req.FormValue(key)
+}
+
+// Param return path param
+func (c *Context) Param(key string) string {
+	value, _ := c.Params[key]
+	return value
 }
 
 // call it before write body

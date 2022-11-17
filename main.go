@@ -19,6 +19,14 @@ func main() {
 		c.String("hello %s, you're at %s\n", c.Query("name"), c.Path)
 	})
 
+	r.GET("/hello/:name", func(c *gee.Context) {
+		c.String("hello %s, you're at %s\n", c.Param("name"), c.Path)
+	})
+
+	r.GET("/assets/*filepath", func(c *gee.Context) {
+		c.JSON(gee.H{"filepath": c.Param("filepath")})
+	})
+
 	r.POST("/login", func(c *gee.Context) {
 		c.JSON(gee.H{
 			"username": c.Form("username"),

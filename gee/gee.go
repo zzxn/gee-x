@@ -19,12 +19,12 @@ func New() *Engine {
 
 // implement http.Handler interface.
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-    c := newContext(w, req)
-    engine.router.handle(c)
+	c := newContext(w, req)
+	engine.router.handle(c)
 }
 
 func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
-    engine.router.addRoute(method, pattern, handler)
+	engine.router.addRoute(method, pattern, handler)
 }
 
 func (engine *Engine) GET(pattern string, handler HandlerFunc) {
