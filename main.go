@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"time"
+
 	"example.com/gee"
 )
 
@@ -9,6 +12,7 @@ import (
 
 func main() {
 	r := gee.New()
+	r.Use(gee.Logger())
 
 	r.GET("/index", func(c *gee.Context) {
 		c.HTML("<h1> GEE INDEX </h1>")
@@ -27,6 +31,11 @@ func main() {
 	}
 
 	v2 := r.Group("/v2")
+	v2.Use(func(c *gee.Context) {
+		t := time.Now()
+		c.Next()
+		log.Printf("[%d] %s in %v for group v2", c.StatusCode, c.Req.RequestURI, time.Since(t))
+	})
 	{
 		v2.GET("/hello/:name", func(c *gee.Context) {
 			c.String("hello %s, you're at %s\n", c.Param("name"), c.Path)

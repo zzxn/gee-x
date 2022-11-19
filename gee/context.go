@@ -18,6 +18,9 @@ type Context struct {
 	Params map[string]string
 	// response info
 	StatusCode int
+	// middleware
+	handlers []HandlerFunc
+	index    int // the handler was executed
 }
 
 func newContext(w http.ResponseWriter, req *http.Request) *Context {
@@ -27,6 +30,15 @@ func newContext(w http.ResponseWriter, req *http.Request) *Context {
 		Path:       req.URL.Path,
 		Method:     req.Method,
 		StatusCode: http.StatusOK,
+		index:      -1,
+	}
+}
+
+func (c *Context) Next() {
+	s := len(c.handlers)
+	c.index++
+	for ; c.index < s; c.index++ {
+		c.handlers[c.index](c)
 	}
 }
 
