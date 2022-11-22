@@ -12,7 +12,6 @@ import (
 
 func main() {
 	r := gee.New()
-	r.Use(gee.Logger())
 
 	r.GET("/index", func(c *gee.Context) {
 		c.HTML("<h1> GEE INDEX </h1>")
@@ -52,6 +51,11 @@ func main() {
 			})
 		})
 	}
+
+    r.GET("/panic", func(c *gee.Context) {
+        names := []string{"andrew"}
+        c.String(names[100])
+    })
 
 	r.Run(":9999")
 }
