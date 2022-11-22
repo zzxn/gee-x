@@ -26,8 +26,6 @@ func A() {
     // DO SOMETHING BEFORE，此时 idx 等于我自己的 idx
     Next() // 等待其他函数执行
     // DO SOMETHING AFTER
-
-    // 如果想要自己被再次执行，那么可以把自己再次添加到 funcs 中
 }
 ```
 
